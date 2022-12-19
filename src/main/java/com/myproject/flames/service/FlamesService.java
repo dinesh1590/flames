@@ -1,12 +1,15 @@
 package com.myproject.flames.service;
 
 import com.myproject.flames.dto.FlamesModel;
+import com.myproject.flames.dto.Response;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FlamesService {
 
-    public String flames(FlamesModel flamesModel) {
+    public Response flames(FlamesModel flamesModel) {
+
+        Response r=new Response();
 
         String res = "";
         if (flamesModel != null) {
@@ -14,7 +17,6 @@ public class FlamesService {
             res = getFlames(flamesNum(flamesModel.getBoy(), flamesModel.getGirl()) ,"flames");
         }
 
-        System.out.println(res);
 
         switch (res.toLowerCase()) {
 
@@ -38,13 +40,19 @@ public class FlamesService {
                 break;
             default:res="Human Being";
         }
-        System.out.println(res);
-        return res;
+
+        r.setFlames(res);
+
+        return r;
     }
 
     public int flamesNum(String a, String b) {
         String[] boy = a.split("");
         String[] girl = b.split("");
+
+        if(a.length()==0 || b.length()==0) {
+            return -1;
+        }
 
         for (int i = 0; i < boy.length; i++) {
             for (int j = 0; j < girl.length; j++) {
@@ -68,17 +76,21 @@ public class FlamesService {
                 fin = fin + girl[i];
         }
 
-        System.out.println(fin);
 
         return fin.length();
     }
 
     public  String getFlames(int num,String ans) {
 
-        System.out.println(num);
         if(num==0){
             return "f";
         }
+
+        if(num==-1) {
+            return "0";
+        }
+
+
 
         int jj=0;
         if(num>ans.length())
